@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TreeBatch (off-chain record.json) — Enigma-Agro-Forestry-Tree-Tracker",
+  "type": "object",
+  "required": ["batchId", "species", "geoHash", "evidenceCid", "owner"],
+  "properties": {
+    "batchId":     { "type": "string", "description": "natural key; hashed to the on-chain id" },
+    "species":     { "type": "string" },
+    "count":       { "type": "integer", "description": "number of trees in the batch" },
+    "geoHash":     { "type": "string", "description": "geohash of the plot (no exact PII coords)" },
+    "evidenceCid": { "type": "string", "description": "IPFS CID of planting photos / cert" },
+    "owner":       { "type": "string", "pattern": "^0x[0-9a-fA-F]{40}$" },
+    "plantedAt":   { "type": "string", "format": "date" },
+    "co2eEstimate":{ "type": "number", "description": "estimated tonnes CO2e sequestered" }
+  }
+}
