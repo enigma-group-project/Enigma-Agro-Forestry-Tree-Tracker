@@ -1,46 +1,28 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
-
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 /// @title IssuerRegistry — Slice 1 (Nursery Registration)  [STUDENT TEMPLATE]
-/// @notice Implement every TODO(member1). Behavior is described in docs/issuer-module.md and
-///         locked by test/IssuerRegistry.t.sol — run `forge test` until it is green.
-contract IssuerRegistry {
-    address public steward;
+/// @notice Implement every TODO(member1). OZ Ownable: owner = Steward.
+contract IssuerRegistry is Ownable {
     mapping(address => bool) public isNursery;
-
     event StewardTransferred(address indexed from, address indexed to);
-    event NurseryRegistered(address indexed issuer, address indexed by);
-    event NurseryDeregistered(address indexed issuer, address indexed by);
-
+    event NurseryRegistered(address indexed nursery, address indexed by);
+    event NurseryDeregistered(address indexed nursery, address indexed by);
     error NotSteward();
     error ZeroAddress();
-
-    modifier onlySteward() {
-        if (msg.sender != steward) revert NotSteward();
-        _;
-    }
-
-    constructor() {
-        steward = msg.sender;
-        emit StewardTransferred(address(0), msg.sender);
-    }
-
-    /// @notice Grant the issuer role. Admin-only; reject zero address; emit NurseryRegistered.
+    modifier onlySteward() { if (msg.sender != owner()) revert NotSteward(); _; }
+    constructor() Ownable(msg.sender) { emit StewardTransferred(address(0), msg.sender); }
+    function steward() external view returns (address) { return owner(); }
     function registerNursery(address account) external onlySteward {
-        // TODO(member1): if account == address(0) revert ZeroAddress();
-        //               isNursery[account] = true; emit NurseryRegistered(account, msg.sender);
+        // TODO(member1): if zero revert ZeroAddress; isNursery[account]=true; emit NurseryRegistered.
         revert("TODO(member1): implement registerNursery");
     }
-
-    /// @notice Revoke the issuer role. Admin-only; emit NurseryDeregistered.
     function deregisterNursery(address account) external onlySteward {
-        // TODO(member1): isNursery[account] = false; emit NurseryDeregistered(account, msg.sender);
+        // TODO(member1): isNursery[account]=false; emit NurseryDeregistered.
         revert("TODO(member1): implement deregisterNursery");
     }
-
-    /// @notice Transfer the steward key. Admin-only; reject zero address; emit StewardTransferred.
     function transferSteward(address newAdmin) external onlySteward {
-        // TODO(member1): validate newAdmin, emit StewardTransferred(steward, newAdmin), then steward = newAdmin;
+        // TODO(member1): validate; _transferOwnership(newAdmin); emit StewardTransferred.
         revert("TODO(member1): implement transferSteward");
     }
 }
